@@ -139,17 +139,17 @@ misresultados download --control 98765432 --licencia 5678 --output ~/Downloads/r
 
 ## Términos y Responsabilidades
 
-**⚠️ Importante**: Al usar esta herramienta, aceptas que:
+**⚠️ Importante**: Al utilizar esta herramienta, aceptas que:
 
-- **Eres el único responsable** de tus datos médicos y tu privacidad
-- **Esta herramienta almacena datos personales localmente** en tu computadora (`~/.misresultados-cli/config.json` y archivos descargados (`./resultados` por defecto))
-- **Debes limpiar tus datos** cuando ya no necesites la herramienta:
+- **Te haces responsable** de cómo manejas tus datos médicos y tu información personal.
+- **Esta herramienta almacena datos personales localmente** en tu computadora (`~/.misresultados-cli/config.json`) y archivos descargados (en un directorio llamado `resultados`, por defecto)
+- **Debes limpiar tus datos** cuando termines de utilizar el CLI:
   ```bash
-  # Para limpiar configuración guardada
+  # Para limpiar configuración guardada (apellidos y fecha de nacimiento)
   rm -rf ~/.misresultados-cli
 
   # Para limpiar PDFs descargados
-  rm -rf ./resultados  # o el directorio que hayas especificado
+  rm -rf ./resultados  # o el directorio que hayas especificado con --output
   ```
 - **No somos responsables** por el uso inadecuado de la herramienta o por problemas con misresultados.com
 - **Es tu responsabilidad** cumplir con las políticas de misresultados.com
