@@ -10,9 +10,10 @@ import { DEFAULT_OUTPUT_DIR } from '../lib/constants.js';
 import { setupGracefulShutdown } from '../lib/ui.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const packageJson = JSON.parse(readFileSync(join(__dirname, '../package.json'), 'utf-8'));
+const packageJson = JSON.parse(
+  readFileSync(join(__dirname, '../package.json'), 'utf-8')
+);
 
-// Setup graceful shutdown handling
 setupGracefulShutdown();
 
 const program = new Command();
@@ -26,14 +27,19 @@ program
 program
   .command('config')
   .description('Guardar credenciales del paciente localmente')
-  .option('-a, --apellidos <apellidos>', 'Apellidos del paciente (tal como aparecen en los récords)')
+  .option(
+    '-a, --apellidos <apellidos>',
+    'Apellidos del paciente (tal como aparecen en los récords)'
+  )
   .option('-f, --fecha <fecha>', 'Fecha de nacimiento (formato YYYY-MM-DD)')
-  .action(async (options) => {
+  .action(async options => {
     if (!options.apellidos && !options.fecha) {
       console.error('Error: Debe proporcionar al menos --apellidos o --fecha');
       console.log('');
       console.log('Uso:');
-      console.log('  misresultados config --apellidos "Del Pueblo" --fecha "1985-03-20"');
+      console.log(
+        '  misresultados config --apellidos "Del Pueblo" --fecha "1985-03-20"'
+      );
       console.log('  misresultados config --apellidos "Del Pueblo"');
       console.log('  misresultados config --fecha "1985-03-20"');
       process.exit(1);
@@ -46,11 +52,20 @@ program
   .command('fetch')
   .description('Buscar y mostrar resultados de laboratorio')
   .requiredOption('-c, --control <number>', 'Número de control del laboratorio')
-  .requiredOption('-l, --licencia <number>', 'Número de licencia del laboratorio')
-  .option('-a, --apellidos <apellidos>', 'Apellidos del paciente (reemplaza la configuración guardada)')
-  .option('-f, --fecha <fecha>', 'Fecha de nacimiento YYYY-MM-DD (reemplaza la configuración guardada)')
+  .requiredOption(
+    '-l, --licencia <number>',
+    'Número de licencia del laboratorio'
+  )
+  .option(
+    '-a, --apellidos <apellidos>',
+    'Apellidos del paciente (reemplaza la configuración guardada)'
+  )
+  .option(
+    '-f, --fecha <fecha>',
+    'Fecha de nacimiento YYYY-MM-DD (reemplaza la configuración guardada)'
+  )
   .option('--format <format>', 'Formato de salida (table|json)', 'table')
-  .action(async (options) => {
+  .action(async options => {
     await fetchResults(options);
   });
 
@@ -59,11 +74,20 @@ program
   .command('download')
   .description('Descargar PDFs de resultados de laboratorio')
   .requiredOption('-c, --control <number>', 'Número de control del laboratorio')
-  .requiredOption('-l, --licencia <number>', 'Número de licencia del laboratorio')
-  .option('-a, --apellidos <apellidos>', 'Apellidos del paciente (reemplaza la configuración guardada)')
-  .option('-f, --fecha <fecha>', 'Fecha de nacimiento YYYY-MM-DD (reemplaza la configuración guardada)')
+  .requiredOption(
+    '-l, --licencia <number>',
+    'Número de licencia del laboratorio'
+  )
+  .option(
+    '-a, --apellidos <apellidos>',
+    'Apellidos del paciente (reemplaza la configuración guardada)'
+  )
+  .option(
+    '-f, --fecha <fecha>',
+    'Fecha de nacimiento YYYY-MM-DD (reemplaza la configuración guardada)'
+  )
   .option('-o, --output <dir>', 'Directorio de salida', DEFAULT_OUTPUT_DIR)
-  .action(async (options) => {
+  .action(async options => {
     await downloadResults(options);
   });
 

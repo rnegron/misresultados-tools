@@ -24,23 +24,25 @@ const mockProcessExit = vi.spyOn(process, 'exit').mockImplementation(() => {
 });
 
 const mockConsoleLog = vi.spyOn(console, 'log').mockImplementation(() => {});
-const mockConsoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
+const mockConsoleError = vi
+  .spyOn(console, 'error')
+  .mockImplementation(() => {});
 
 describe('Services Functions', () => {
   let resultsHtml;
 
   beforeEach(async () => {
     resultsHtml = await readFile(
-      join(process.cwd(), 'tests/fixtures/results-response.html'), 
+      join(process.cwd(), 'tests/fixtures/results-response.html'),
       'utf-8'
     );
     nock.cleanAll();
     vi.clearAllMocks();
-    
+
     // Reset all mocks to default behavior
     const { writeFile, mkdir } = await import('fs/promises');
     const { existsSync } = await import('fs');
-    
+
     writeFile.mockResolvedValue();
     mkdir.mockResolvedValue();
     existsSync.mockReturnValue(true);
@@ -53,7 +55,7 @@ describe('Services Functions', () => {
   describe('fetchResults', () => {
     it('should fetch and display results successfully', async () => {
       const sessionCookie = 'PHPSESSID=test123; Path=/';
-      
+
       // Mock initial request
       const initialScope = nock('https://misresultados.com')
         .get('/soy-un-paciente/')
@@ -99,8 +101,9 @@ describe('Services Functions', () => {
         fecha: '1985-03-20'
       };
 
-      await expect(fetchResults(options))
-        .rejects.toThrow('process.exit called');
+      await expect(fetchResults(options)).rejects.toThrow(
+        'process.exit called'
+      );
 
       expect(mockConsoleError).toHaveBeenCalled();
       expect(scope.isDone()).toBe(true);
@@ -108,7 +111,7 @@ describe('Services Functions', () => {
 
     it('should handle no results found', async () => {
       const sessionCookie = 'PHPSESSID=test123; Path=/';
-      
+
       const initialScope = nock('https://misresultados.com')
         .get('/soy-un-paciente/')
         .query({ controlnumber: '12345', lablicense: '6789' })
@@ -137,7 +140,7 @@ describe('Services Functions', () => {
 
     it('should output JSON format correctly', async () => {
       const sessionCookie = 'PHPSESSID=test123; Path=/';
-      
+
       const initialScope = nock('https://misresultados.com')
         .get('/soy-un-paciente/')
         .query({ controlnumber: '12345', lablicense: '6789' })
@@ -161,11 +164,11 @@ describe('Services Functions', () => {
       await fetchResults(options);
 
       // Check that JSON was logged
-      const jsonOutput = mockConsoleLog.mock.calls.find(call => 
+      const jsonOutput = mockConsoleLog.mock.calls.find(call =>
         call[0].includes('"sessionId"')
       );
       expect(jsonOutput).toBeDefined();
-      
+
       const parsedOutput = JSON.parse(jsonOutput[0]);
       expect(parsedOutput).toHaveProperty('sessionId', 'test123');
       expect(parsedOutput).toHaveProperty('results');
@@ -185,8 +188,9 @@ describe('Services Functions', () => {
         fecha: '1985-03-20'
       };
 
-      await expect(fetchResults(options))
-        .rejects.toThrow('process.exit called');
+      await expect(fetchResults(options)).rejects.toThrow(
+        'process.exit called'
+      );
 
       expect(mockConsoleError).toHaveBeenCalledWith(
         'Error buscando resultados:',
@@ -199,15 +203,15 @@ describe('Services Functions', () => {
     it('should download PDFs successfully', async () => {
       const { writeFile, mkdir } = await import('fs/promises');
       const { existsSync } = await import('fs');
-      
+
       // Mock file system
       existsSync.mockReturnValue(false); // Directory doesn't exist
       mkdir.mockResolvedValue();
       writeFile.mockResolvedValue();
-      
+
       const sessionCookie = 'PHPSESSID=test123; Path=/';
       const fakePdfBuffer = Buffer.from('%PDF-1.4\n%fake pdf content');
-      
+
       // Mock initial request and form submission
       const initialScope = nock('https://misresultados.com')
         .get('/soy-un-paciente/')
@@ -247,7 +251,7 @@ describe('Services Functions', () => {
         expect.stringContaining('.pdf'),
         fakePdfBuffer
       );
-      
+
       expect(initialScope.isDone()).toBe(true);
       expect(submitScope.isDone()).toBe(true);
       expect(mockConsoleLog).toHaveBeenCalled();
@@ -255,7 +259,7 @@ describe('Services Functions', () => {
 
     it('should handle no results in download', async () => {
       const sessionCookie = 'PHPSESSID=test123; Path=/';
-      
+
       const initialScope = nock('https://misresultados.com')
         .get('/soy-un-paciente/')
         .query({ controlnumber: '12345', lablicense: '6789' })
@@ -283,7 +287,7 @@ describe('Services Functions', () => {
 
     it('should handle PDF download errors gracefully', async () => {
       const sessionCookie = 'PHPSESSID=test123; Path=/';
-      
+
       // Mock successful initial requests
       const initialScope = nock('https://misresultados.com')
         .get('/soy-un-paciente/')
@@ -317,6 +321,5 @@ describe('Services Functions', () => {
         expect.stringContaining('❌ Falló:')
       );
     });
-
   });
 });

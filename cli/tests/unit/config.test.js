@@ -6,7 +6,9 @@ const mockProcessExit = vi.spyOn(process, 'exit').mockImplementation(() => {
   throw new Error('process.exit called');
 });
 
-const mockConsoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
+const mockConsoleError = vi
+  .spyOn(console, 'error')
+  .mockImplementation(() => {});
 const mockConsoleLog = vi.spyOn(console, 'log').mockImplementation(() => {});
 
 // Mock fs/promises
@@ -27,10 +29,11 @@ describe('Config Functions', () => {
         apellidos: 'Del Pueblo',
         fecha: 'invalid-date'
       };
-      
-      await expect(getPatientInfo(options))
-        .rejects.toThrow('process.exit called');
-      
+
+      await expect(getPatientInfo(options)).rejects.toThrow(
+        'process.exit called'
+      );
+
       expect(mockConsoleError).toHaveBeenCalledWith(
         expect.stringContaining('formato YYYY-MM-DD')
       );
@@ -38,10 +41,11 @@ describe('Config Functions', () => {
 
     it('should handle missing credentials', async () => {
       const options = {};
-      
-      await expect(getPatientInfo(options))
-        .rejects.toThrow('process.exit called');
-      
+
+      await expect(getPatientInfo(options)).rejects.toThrow(
+        'process.exit called'
+      );
+
       expect(mockConsoleError).toHaveBeenCalledWith(
         expect.stringContaining('Se requiere nombre del paciente')
       );
@@ -52,9 +56,9 @@ describe('Config Functions', () => {
         apellidos: 'Del Pueblo',
         fecha: '1985-03-20'
       };
-      
+
       const patientInfo = await getPatientInfo(options);
-      
+
       expect(patientInfo).toEqual({
         name: 'Del Pueblo',
         year: '1985',
@@ -68,7 +72,7 @@ describe('Config Functions', () => {
     it('should save config successfully', async () => {
       const { writeFile, readFile } = await import('fs/promises');
       const { existsSync } = await import('fs');
-      
+
       existsSync.mockReturnValue(true);
       readFile.mockResolvedValue('{}'); // Mock existing config
       writeFile.mockResolvedValue();
@@ -89,7 +93,7 @@ describe('Config Functions', () => {
     it('should create directory if it does not exist', async () => {
       const { writeFile, mkdir } = await import('fs/promises');
       const { existsSync } = await import('fs');
-      
+
       existsSync.mockReturnValue(false);
       mkdir.mockResolvedValue();
       writeFile.mockResolvedValue();
@@ -108,7 +112,7 @@ describe('Config Functions', () => {
     it('should handle partial options', async () => {
       const { writeFile, readFile } = await import('fs/promises');
       const { existsSync } = await import('fs');
-      
+
       existsSync.mockReturnValue(true);
       readFile.mockResolvedValue('{}'); // Mock existing config
       writeFile.mockResolvedValue();
@@ -126,7 +130,7 @@ describe('Config Functions', () => {
     it('should handle save errors', async () => {
       const { writeFile, readFile } = await import('fs/promises');
       const { existsSync } = await import('fs');
-      
+
       existsSync.mockReturnValue(true);
       readFile.mockResolvedValue('{}');
       writeFile.mockRejectedValue(new Error('Write failed'));
@@ -136,8 +140,7 @@ describe('Config Functions', () => {
         fecha: '1990-01-15'
       };
 
-      await expect(saveConfig(options))
-        .rejects.toThrow('process.exit called');
+      await expect(saveConfig(options)).rejects.toThrow('process.exit called');
 
       expect(mockConsoleError).toHaveBeenCalledWith(
         expect.stringContaining('Error guardando configuración:'),
@@ -150,12 +153,14 @@ describe('Config Functions', () => {
     it('should load existing config', async () => {
       const { readFile } = await import('fs/promises');
       const { existsSync } = await import('fs');
-      
+
       existsSync.mockReturnValue(true);
-      readFile.mockResolvedValue(JSON.stringify({
-        name: 'Del Pueblo',
-        dob: '1990-01-15'
-      }));
+      readFile.mockResolvedValue(
+        JSON.stringify({
+          name: 'Del Pueblo',
+          dob: '1990-01-15'
+        })
+      );
 
       const config = await loadConfig();
 
@@ -167,7 +172,7 @@ describe('Config Functions', () => {
 
     it('should return empty config if file does not exist', async () => {
       const { existsSync } = await import('fs');
-      
+
       existsSync.mockReturnValue(false);
 
       const config = await loadConfig();
@@ -178,7 +183,7 @@ describe('Config Functions', () => {
     it('should handle read errors gracefully', async () => {
       const { readFile } = await import('fs/promises');
       const { existsSync } = await import('fs');
-      
+
       existsSync.mockReturnValue(true);
       readFile.mockRejectedValue(new Error('Read error'));
 

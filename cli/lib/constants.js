@@ -16,7 +16,8 @@ export const FORM_FIELDS = {
 
 // HTTP Headers
 export const DEFAULT_HEADERS = {
-  'User-Agent': 'misresultados-cli (+https://github.com/rnegron/misresultados-tools/tree/main/cli)',
+  'User-Agent':
+    'misresultados-cli (+https://github.com/rnegron/misresultados-tools/tree/main/cli)',
   'Accept-Language': 'en-US,en;q=0.5',
   'Accept-Encoding': 'gzip, deflate, br, zstd'
 };
@@ -29,7 +30,8 @@ export const COOKIES = {
 
 // RegEx patterns
 export const PATTERNS = {
-  PDF_LINK: /href=['"]([^'"]*\/resultados\/resultadopdf\.php\?resul=[^'"]+)['"]/,
+  PDF_LINK:
+    /href=['"]([^'"]*\/resultados\/resultadopdf\.php\?resul=[^'"]+)['"]/,
   TABLE_ROW: /<tr[^>]*>(.*?)<\/tr>/gs,
   TABLE_CELL: /<td[^>]*>([^<]*(?:<[^>]*>[^<]*)*)<\/td>/g,
   SESSION_ID: /PHPSESSID=([^;]+)/,

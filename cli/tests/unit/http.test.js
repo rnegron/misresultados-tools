@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
-import { 
-  extractSessionId, 
-  buildPatientUrl, 
-  buildFormData, 
+import {
+  extractSessionId,
+  buildPatientUrl,
+  buildFormData,
   buildRequestHeaders
 } from '../../lib/http.js';
 
@@ -14,17 +14,14 @@ describe('HTTP Helper Functions', () => {
         'PHPSESSID=abc123def456; Path=/',
         'other=value; Path=/'
       ];
-      
+
       const sessionId = extractSessionId(cookies);
       expect(sessionId).toBe('abc123def456');
     });
 
     it('should return null when no session ID found', () => {
-      const cookies = [
-        'pll_language=es; Path=/',
-        'other=value; Path=/'
-      ];
-      
+      const cookies = ['pll_language=es; Path=/', 'other=value; Path=/'];
+
       const sessionId = extractSessionId(cookies);
       expect(sessionId).toBeNull();
     });
@@ -33,7 +30,9 @@ describe('HTTP Helper Functions', () => {
   describe('buildPatientUrl', () => {
     it('should build patient URL correctly', () => {
       const url = buildPatientUrl('12345', '6789');
-      expect(url).toBe('https://misresultados.com/soy-un-paciente/?controlnumber=12345&lablicense=6789');
+      expect(url).toBe(
+        'https://misresultados.com/soy-un-paciente/?controlnumber=12345&lablicense=6789'
+      );
     });
   });
 
@@ -45,10 +44,10 @@ describe('HTTP Helper Functions', () => {
         month: '03',
         day: '20'
       };
-      
+
       const formData = buildFormData(patientInfo, '12345', '6789');
       const params = new URLSearchParams(formData);
-      
+
       expect(params.get('patientLastName')).toBe('Del Pueblo');
       expect(params.get('birthDateAnio')).toBe('1985');
       expect(params.get('birthDateMes')).toBe('03');
@@ -61,7 +60,7 @@ describe('HTTP Helper Functions', () => {
   describe('buildRequestHeaders', () => {
     it('should build request headers with session ID', () => {
       const headers = buildRequestHeaders('test123', 'https://example.com');
-      
+
       expect(headers['Content-Type']).toBe('application/x-www-form-urlencoded');
       expect(headers['Cookie']).toContain('PHPSESSID=test123');
       expect(headers['Referer']).toBe('https://example.com');

@@ -3,15 +3,19 @@
 Node.js CLI tool for programmatically accessing health records from misresultados.com.
 
 ## Commands
+
 - `pnpm install` - Install dependencies
 - `pnpm test` - Run tests
 - `pnpm test:watch` - Run tests in watch mode
 - `pnpm test:coverage` - Run tests with coverage
+- `pnpm format` - Format all code with Prettier
+- `pnpm format:check` - Check code formatting without changes
 - `pnpm link --global` - Install CLI globally for testing
 
 ## Architecture
 
 ### Folder Structure
+
 ```
 ├── bin/resultados.js      # CLI entry point
 ├── lib/
@@ -31,21 +35,25 @@ Node.js CLI tool for programmatically accessing health records from misresultado
 ### Key Design Patterns
 
 **1. Modular Architecture**
+
 - Each module has a single responsibility
 - Clean separation between HTTP, parsing, config, and business logic
 - All exports use named exports (no default exports)
 
 **2. Constants-Driven Configuration**
+
 - All URLs, form fields, patterns centralized in `constants.js`
 - Regex patterns defined once and reused
 - Makes the codebase maintainable and testable
 
 **3. Session Management**
+
 - Automatic PHPSESSID cookie extraction and reuse
 - Headers properly configured for form submission
 - Session cookies passed to PDF downloads
 
 **4. Error Handling**
+
 - Graceful error handling with informative messages
 - Process.exit(1) for CLI error scenarios
 - HTTP error status validation
@@ -53,19 +61,23 @@ Node.js CLI tool for programmatically accessing health records from misresultado
 ## Code style
 
 ### ESM Modules
+
 - Use `type: "module"` in package.json
 - Import/export syntax throughout
 - No CommonJS require() statements
 
 ### Dependencies
+
 - **Minimal dependencies policy**: Only `commander`, `picocolors`, `ora`, and `debug`
 - No heavy frameworks or HTTP libraries
 - Use Node.js built-in `https` module for HTTP requests
 - No external HTML parsers - use regex patterns
 - `ora` for spinner animations and user feedback
 - Debug logging with the `debug` package for troubleshooting
+- `prettier` for consistent code formatting (dev dependency only)
 
 ### Console Output Styling
+
 - Use `picocolors` for all console output styling
 - `ora` spinners for network operations and progress feedback
 - Consistent emoji usage: 🔍 🎉 ✅ ❌ ⚠️ 📋 📄 🔗
@@ -77,13 +89,22 @@ Node.js CLI tool for programmatically accessing health records from misresultado
   - Cyan: Headers and links
   - Gray: Separators and secondary info
 
+### Code Formatting
+
+- **Prettier**: All code is formatted with Prettier using semi-standard style
+- **Configuration**: `.prettierrc` with semicolons, single quotes, no trailing commas
+- **CI/CD Integration**: Format checking enforced in GitHub Actions
+- **Commands**: Use `pnpm format` to format code, `pnpm format:check` to validate
+
 ### Function Design
+
 - Pure functions where possible
 - Async/await for all asynchronous operations
 - Clear parameter validation and error messages
 - Functions return structured data objects
 
 ### Testing
+
 - Comprehensive test coverage with Vitest
 - HTTP mocking with Nock
 - Anonymized test fixtures
@@ -92,6 +113,7 @@ Node.js CLI tool for programmatically accessing health records from misresultado
 ## Data Privacy & Security
 
 ### Anonymization Requirements
+
 - All real patient data must be scrambled in fixtures
 - Use "Del Pueblo" as test patient surname
 - Replace real base64 IDs with fake ones
@@ -99,6 +121,7 @@ Node.js CLI tool for programmatically accessing health records from misresultado
 - No real dates or personal information in test data
 
 ### Security Practices
+
 - User-Agent headers mimic real browser
 - Proper session cookie handling
 - Validate PDF responses before saving
@@ -107,6 +130,7 @@ Node.js CLI tool for programmatically accessing health records from misresultado
 ## CLI Patterns
 
 ### Command Structure
+
 ```bash
 misresultados config --apellidos "..." --fecha YYYY-MM-DD
 misresultados fetch --control N --licencia N [--apellidos "..."] [--fecha YYYY-MM-DD] [--format json]
@@ -114,12 +138,14 @@ misresultados download --control N --licencia N [options] [--output DIR]
 ```
 
 ### Configuration Management
+
 - Store user config in `~/.misresultados-cli/config.json`
 - Allow CLI options to override saved config
 - Validate date format (YYYY-MM-DD)
 - Clear error messages for missing required data
 
 ### Output Formats
+
 - Default: Styled table with colors and formatting (Orden, Licencia, Transmitido)
 - JSON: Clean JSON output for programmatic use (includes sessionId)
 - Curl commands displayed for manual PDF downloads
@@ -129,20 +155,97 @@ misresultados download --control N --licencia N [options] [--output DIR]
 ## Workflow
 
 ### Development Process
+
 1. **Always read existing code first** to understand patterns
 2. **Follow the established architecture** - don't create new patterns
 3. **Maintain minimal dependencies** - prefer Node.js built-ins
-4. **Test thoroughly** - especially HTTP interactions and error cases
-5. **Use anonymized data** in all tests and examples
+4. **Format code with Prettier** - run `pnpm format` before committing
+5. **Test thoroughly** - especially HTTP interactions and error cases
+6. **Use anonymized data** in all tests and examples
 
 ### Adding New Features
+
 1. Update constants.js if new URLs/patterns needed
 2. Add business logic to services.js
 3. Update CLI commands in bin/resultados.js
-4. Add comprehensive tests with mocked HTTP
-5. Update README.md with usage examples
+4. Format code with `pnpm format`
+5. Add comprehensive tests with mocked HTTP
+6. Update README.md with usage examples
+
+### CI/CD Pipeline
+
+The GitHub Actions workflow (`.github/workflows/ci.yml`) runs on every push and PR:
+
+1. **Multi-Node Testing**: Tests on Node.js 18.x, 20.x, and 22.x
+2. **Code Formatting**: Enforces Prettier formatting with `pnpm format:check`
+3. **Testing**: Runs full test suite with `pnpm test`
+4. **Coverage**: Generates coverage reports and uploads to Codecov
+5. **Dependency Management**: Uses pnpm for faster, reliable builds
+
+### Release Process
+
+To create a new GitHub release and publish to npm:
+
+#### 1. Pre-release Checks
+```bash
+# Ensure all tests pass and code is formatted
+pnpm test
+pnpm format:check
+
+# Ensure you're on main branch with latest changes
+git checkout main
+git pull origin main
+```
+
+#### 2. Version Bump
+```bash
+# Update version in package.json (patch/minor/major)
+npm version patch  # for bug fixes (1.0.0 -> 1.0.1)
+npm version minor  # for new features (1.0.0 -> 1.1.0)  
+npm version major  # for breaking changes (1.0.0 -> 2.0.0)
+
+# This creates a git tag automatically
+```
+
+#### 3. Push Changes
+```bash
+# Push the version commit and tag
+git push origin main
+git push origin --tags
+```
+
+#### 4. Create GitHub Release
+```bash
+# Using GitHub CLI (recommended)
+gh release create v1.0.1 \
+  --title "Release v1.0.1" \
+  --notes "Bug fixes and improvements" \
+  --latest
+
+# Or manually via GitHub web interface:
+# 1. Go to https://github.com/rnegron/misresultados-tools/releases
+# 2. Click "Create a new release"
+# 3. Select the tag you just created
+# 4. Add release notes describing changes
+# 5. Click "Publish release"
+```
+
+#### 5. Publish to npm
+```bash
+# Build and publish (package.json has prepublishOnly script)
+npm publish
+
+# Verify the package was published
+npm view misresultados-cli
+```
+
+#### 6. Post-release
+- Verify the npm badge in README shows the new version
+- Check that the GitHub release appears correctly
+- Test the published package: `npm install -g misresultados-cli@latest`
 
 ### HTTP Implementation Notes
+
 - Use Node.js built-in `https` module
 - Handle both string and binary responses (PDFs)
 - Extract and reuse session cookies
@@ -150,6 +253,7 @@ misresultados download --control N --licencia N [options] [--output DIR]
 - Proper error handling for network issues
 
 ## Important Reminders
+
 - **Defensive security only** - This tool is for legitimate health record access
 - **Data privacy** - Never commit real patient data or credentials
 - **ESM modules** - All imports/exports use ESM syntax

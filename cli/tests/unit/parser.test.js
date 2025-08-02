@@ -10,7 +10,7 @@ describe('Parser Functions', () => {
 
   beforeEach(async () => {
     resultsHtml = await readFile(
-      join(process.cwd(), 'tests/fixtures/results-response.html'), 
+      join(process.cwd(), 'tests/fixtures/results-response.html'),
       'utf-8'
     );
     vi.clearAllMocks();
@@ -19,25 +19,28 @@ describe('Parser Functions', () => {
   describe('parseResults', () => {
     it('should parse results from HTML correctly', () => {
       const results = parseResults(resultsHtml);
-      
+
       expect(results).toHaveLength(3);
       expect(results[0]).toMatchObject({
         order: '98765432',
         license: '5678',
         transmitted: '2024-03-15T10:30:00',
-        pdfUrl: 'https://misresultados.com/resultados/resultadopdf.php?resul=QWJjRGVmR2hpSmsxMjM0NQ=='
+        pdfUrl:
+          'https://misresultados.com/resultados/resultadopdf.php?resul=QWJjRGVmR2hpSmsxMjM0NQ=='
       });
       expect(results[1]).toMatchObject({
         order: '98765432',
         license: '5678',
         transmitted: '2024-03-16T14:20:15',
-        pdfUrl: 'https://misresultados.com/resultados/resultadopdf.php?resul=UXdlUnR5VWlPcDY3ODkw'
+        pdfUrl:
+          'https://misresultados.com/resultados/resultadopdf.php?resul=UXdlUnR5VWlPcDY3ODkw'
       });
       expect(results[2]).toMatchObject({
         order: '98765432',
         license: '5678',
         transmitted: '2024-03-17T09:45:30',
-        pdfUrl: 'https://misresultados.com/resultados/resultadopdf.php?resul=WnhjVmJuTTU2NzgxMjM0'
+        pdfUrl:
+          'https://misresultados.com/resultados/resultadopdf.php?resul=WnhjVmJuTTU2NzgxMjM0'
       });
     });
 
@@ -59,7 +62,8 @@ describe('Parser Functions', () => {
           order: '98765432',
           license: '5678',
           transmitted: '2024-03-15T10:30:00',
-          pdfUrl: 'https://misresultados.com/resultados/resultadopdf.php?resul=test123'
+          pdfUrl:
+            'https://misresultados.com/resultados/resultadopdf.php?resul=test123'
         }
       ];
 
@@ -79,7 +83,8 @@ describe('Parser Functions', () => {
           order: '98765432',
           license: '5678',
           transmitted: '2024-03-15T10:30:00',
-          pdfUrl: 'https://misresultados.com/resultados/resultadopdf.php?resul=test123'
+          pdfUrl:
+            'https://misresultados.com/resultados/resultadopdf.php?resul=test123'
         }
       ];
 
@@ -110,13 +115,15 @@ describe('Parser Functions', () => {
           order: '98765432',
           license: '5678',
           transmitted: '2024-03-15T10:30:00',
-          pdfUrl: 'https://misresultados.com/resultados/resultadopdf.php?resul=test1'
+          pdfUrl:
+            'https://misresultados.com/resultados/resultadopdf.php?resul=test1'
         },
         {
           order: '98765433',
           license: '5679',
           transmitted: '2024-03-16T14:20:15',
-          pdfUrl: 'https://misresultados.com/resultados/resultadopdf.php?resul=test2'
+          pdfUrl:
+            'https://misresultados.com/resultados/resultadopdf.php?resul=test2'
         }
       ];
 
@@ -129,9 +136,9 @@ describe('Parser Functions', () => {
       expect(mockConsoleLog).toHaveBeenCalledWith(
         expect.stringContaining('98765433')
       );
-      
+
       // Should display two curl commands
-      const curlCalls = mockConsoleLog.mock.calls.filter(call => 
+      const curlCalls = mockConsoleLog.mock.calls.filter(call =>
         call[0].includes('curl')
       );
       expect(curlCalls.length).toBeGreaterThanOrEqual(2);

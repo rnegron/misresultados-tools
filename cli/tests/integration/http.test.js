@@ -2,8 +2,8 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import nock from 'nock';
 import { readFile } from 'fs/promises';
 import { join } from 'path';
-import { 
-  makeRequest, 
+import {
+  makeRequest,
   downloadPDF,
   buildPatientUrl,
   extractSessionId,
@@ -16,7 +16,7 @@ describe('HTTP Integration Tests', () => {
 
   beforeEach(async () => {
     resultsHtml = await readFile(
-      join(process.cwd(), 'tests/fixtures/results-response.html'), 
+      join(process.cwd(), 'tests/fixtures/results-response.html'),
       'utf-8'
     );
     nock.cleanAll();
@@ -38,14 +38,14 @@ describe('HTTP Integration Tests', () => {
       const url = buildPatientUrl('12345', '6789');
       const response = await makeRequest(url);
       const sessionId = extractSessionId(response.cookies);
-      
+
       expect(sessionId).toBe('test123');
       expect(scope.isDone()).toBe(true);
     });
 
     it('should submit form with correct headers and data', async () => {
       const sessionCookie = 'PHPSESSID=test123; Path=/';
-      
+
       const initialScope = nock('https://misresultados.com')
         .get('/soy-un-paciente/')
         .query({ controlnumber: '12345', lablicense: '6789' })
@@ -54,10 +54,12 @@ describe('HTTP Integration Tests', () => {
         });
 
       const submitScope = nock('https://misresultados.com')
-        .post('/soy-un-paciente/', (body) => {
+        .post('/soy-un-paciente/', body => {
           const params = new URLSearchParams(body);
-          return params.get('patientLastName') === 'Del Pueblo' &&
-                 params.get('labControlNumber') === '12345';
+          return (
+            params.get('patientLastName') === 'Del Pueblo' &&
+            params.get('labControlNumber') === '12345'
+          );
         })
         .query({ controlnumber: '12345', lablicense: '6789' })
         .matchHeader('Cookie', /PHPSESSID=test123/)
@@ -67,11 +69,16 @@ describe('HTTP Integration Tests', () => {
       const url = buildPatientUrl('12345', '6789');
       const initialResponse = await makeRequest(url);
       const sessionId = extractSessionId(initialResponse.cookies);
-      
-      const patientInfo = { name: 'Del Pueblo', year: '1985', month: '03', day: '20' };
+
+      const patientInfo = {
+        name: 'Del Pueblo',
+        year: '1985',
+        month: '03',
+        day: '20'
+      };
       const formData = buildFormData(patientInfo, '12345', '6789');
       const headers = buildRequestHeaders(sessionId, url);
-      
+
       const submitResponse = await makeRequest(url, {
         method: 'POST',
         headers,
@@ -90,10 +97,9 @@ describe('HTTP Integration Tests', () => {
         .replyWithError('Network error');
 
       const url = buildPatientUrl('12345', '6789');
-      
-      await expect(makeRequest(url))
-        .rejects.toThrow('Network error');
-      
+
+      await expect(makeRequest(url)).rejects.toThrow('Network error');
+
       expect(scope.isDone()).toBe(true);
     });
   });
@@ -101,7 +107,7 @@ describe('HTTP Integration Tests', () => {
   describe('downloadPDF', () => {
     it('should download PDF with correct headers', async () => {
       const fakePdfBuffer = Buffer.from('%PDF-1.4\n%fake pdf content');
-      
+
       const scope = nock('https://misresultados.com')
         .get('/resultados/resultadopdf.php')
         .query({ resul: 'test123' })
@@ -110,9 +116,10 @@ describe('HTTP Integration Tests', () => {
           'Content-Type': 'application/pdf'
         });
 
-      const pdfUrl = 'https://misresultados.com/resultados/resultadopdf.php?resul=test123';
+      const pdfUrl =
+        'https://misresultados.com/resultados/resultadopdf.php?resul=test123';
       const buffer = await downloadPDF(pdfUrl, 'session123');
-      
+
       expect(buffer).toBeInstanceOf(Buffer);
       expect(buffer.toString('utf-8', 0, 4)).toBe('%PDF');
       expect(scope.isDone()).toBe(true);
@@ -124,11 +131,13 @@ describe('HTTP Integration Tests', () => {
         .query({ resul: 'test123' })
         .reply(200, '<html>Not a PDF</html>');
 
-      const pdfUrl = 'https://misresultados.com/resultados/resultadopdf.php?resul=test123';
-      
-      await expect(downloadPDF(pdfUrl, 'session123'))
-        .rejects.toThrow('Response is not a PDF');
-      
+      const pdfUrl =
+        'https://misresultados.com/resultados/resultadopdf.php?resul=test123';
+
+      await expect(downloadPDF(pdfUrl, 'session123')).rejects.toThrow(
+        'Response is not a PDF'
+      );
+
       expect(scope.isDone()).toBe(true);
     });
 
@@ -138,11 +147,13 @@ describe('HTTP Integration Tests', () => {
         .query({ resul: 'test123' })
         .reply(404, 'Not Found');
 
-      const pdfUrl = 'https://misresultados.com/resultados/resultadopdf.php?resul=test123';
-      
-      await expect(downloadPDF(pdfUrl, 'session123'))
-        .rejects.toThrow('HTTP 404');
-      
+      const pdfUrl =
+        'https://misresultados.com/resultados/resultadopdf.php?resul=test123';
+
+      await expect(downloadPDF(pdfUrl, 'session123')).rejects.toThrow(
+        'HTTP 404'
+      );
+
       expect(scope.isDone()).toBe(true);
     });
   });

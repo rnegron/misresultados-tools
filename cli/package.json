@@ -4,13 +4,15 @@
   "description": "Herramienta CLI para acceder a récords médicos desde misresultados.com de forma programática",
   "type": "module",
   "bin": {
-    "misresultados": "./bin/resultados.js"
+    "misresultados": "bin/resultados.js"
   },
   "scripts": {
     "start": "node bin/resultados.js",
     "test": "vitest run",
     "test:watch": "vitest --watch",
     "test:coverage": "vitest run --coverage",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "prepublishOnly": "pnpm test"
   },
   "keywords": [
@@ -28,7 +30,7 @@
   "homepage": "https://github.com/rnegron/misresultados-tools/tree/main/cli",
   "repository": {
     "type": "git",
-    "url": "https://github.com/rnegron/misresultados-tools.git",
+    "url": "git+https://github.com/rnegron/misresultados-tools.git",
     "directory": "cli"
   },
   "bugs": {
@@ -55,6 +57,7 @@
   "devDependencies": {
     "@vitest/coverage-v8": "^1.0.0",
     "nock": "^13.4.0",
+    "prettier": "^3.6.2",
     "vitest": "^1.0.0"
   }
 }

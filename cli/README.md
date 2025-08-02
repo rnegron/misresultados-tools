@@ -3,8 +3,9 @@
 [![npm version](https://badge.fury.io/js/misresultados-cli.svg)](https://badge.fury.io/js/misresultados-cli)
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)](https://nodejs.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Tests](https://github.com/rnegron/misresultados-tools/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/rnegron/misresultados-tools/actions/workflows/ci-cd.yml)
+[![CI](https://github.com/rnegron/misresultados-tools/actions/workflows/ci.yml/badge.svg)](https://github.com/rnegron/misresultados-tools/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/rnegron/misresultados-tools/branch/main/graph/badge.svg)](https://codecov.io/gh/rnegron/misresultados-tools)
+[![Code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 [![Downloads](https://img.shields.io/npm/dm/misresultados-cli.svg)](https://www.npmjs.com/package/misresultados-cli)
 
 Herramienta CLI para acceder a récords médicos almacenados en misresultados.com de forma programática.
@@ -76,6 +77,7 @@ misresultados download --control 98765432 --licencia 5678 --output pdf_results
 ```
 
 **¿Qué verás?**
+
 - El comando `fetch` te muestra una tabla con las fechas de tus resultados
   - También incluye comandos `curl` que puedes copiar y pegar si prefieres descargar cada uno manualmente.
 - El comando `download` descarga todos los PDFs directamente a una carpeta llamada `resultados/` en tu directorio actual (puedes cambiar el directorio con `--output`/`-o`).
@@ -144,6 +146,7 @@ misresultados download --control 98765432 --licencia 5678 --output ~/Downloads/r
 - **Te haces responsable** de cómo manejas tus datos médicos y tu información personal.
 - **Esta herramienta almacena datos personales localmente** en tu computadora (`~/.misresultados-cli/config.json`) y archivos descargados (en un directorio llamado `resultados`, por defecto)
 - **Debes limpiar tus datos** cuando termines de utilizar el CLI:
+
   ```bash
   # Para limpiar configuración guardada (apellidos y fecha de nacimiento)
   rm -rf ~/.misresultados-cli
@@ -151,6 +154,7 @@ misresultados download --control 98765432 --licencia 5678 --output ~/Downloads/r
   # Para limpiar PDFs descargados
   rm -rf ./resultados  # o el directorio que hayas especificado con --output
   ```
+
 - **No somos responsables** por el uso inadecuado de la herramienta o por problemas con misresultados.com
 - **Es tu responsabilidad** cumplir con las políticas de misresultados.com
 

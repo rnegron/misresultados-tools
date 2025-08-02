@@ -25,8 +25,12 @@ export async function saveConfig(options) {
     await writeFile(CONFIG_FILE, JSON.stringify(config, null, 2));
     console.log(pc.green('✅ Configuración guardada exitosamente'));
 
-    if (config.name) console.log(`   ${pc.blue('👤 Nombre:')} ${pc.bold(config.name)}`);
-    if (config.dob) console.log(`   ${pc.blue('📅 Fecha de nacimiento:')} ${pc.bold(config.dob)}`);
+    if (config.name)
+      console.log(`   ${pc.blue('👤 Nombre:')} ${pc.bold(config.name)}`);
+    if (config.dob)
+      console.log(
+        `   ${pc.blue('📅 Fecha de nacimiento:')} ${pc.bold(config.dob)}`
+      );
   } catch (error) {
     console.error(pc.red('❌ Error guardando configuración:'), error.message);
     process.exit(1);
@@ -47,23 +51,33 @@ export async function loadConfig() {
 
 export async function getPatientInfo(options) {
   const config = await loadConfig();
-  
+
   const name = options.apellidos || config.name;
   const dob = options.fecha || config.dob;
-  
+
   if (!name || !dob) {
-    console.error(pc.red('❌ Error: Se requiere nombre del paciente y fecha de nacimiento.'));
-    console.error(pc.yellow('💡 Provéelos con las opciones --apellidos y --fecha o guárdalos usando "misresultados config"'));
+    console.error(
+      pc.red('❌ Error: Se requiere nombre del paciente y fecha de nacimiento.')
+    );
+    console.error(
+      pc.yellow(
+        '💡 Provéelos con las opciones --apellidos y --fecha o guárdalos usando "misresultados config"'
+      )
+    );
     process.exit(1);
   }
-  
+
   // Parse date
   const dobParts = dob.split('-');
   if (dobParts.length !== 3) {
-    console.error(pc.red('❌ Error: La fecha de nacimiento debe estar en formato YYYY-MM-DD'));
+    console.error(
+      pc.red(
+        '❌ Error: La fecha de nacimiento debe estar en formato YYYY-MM-DD'
+      )
+    );
     process.exit(1);
   }
-  
+
   return {
     name,
     year: dobParts[0],

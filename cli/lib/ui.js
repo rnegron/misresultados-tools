@@ -9,7 +9,7 @@ export function createSpinner(text) {
     spinner: 'dots',
     color: 'blue'
   });
-  
+
   return spinner;
 }
 
@@ -20,7 +20,6 @@ export function stopAllSpinners() {
   }
 }
 
-// Graceful shutdown handling
 export function setupGracefulShutdown() {
   const cleanup = () => {
     stopAllSpinners();
