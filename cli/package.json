@@ -1,0 +1,60 @@
+{
+  "name": "misresultados-cli",
+  "version": "1.0.0",
+  "description": "Herramienta CLI para acceder a récords médicos desde misresultados.com de forma programática",
+  "type": "module",
+  "bin": {
+    "misresultados": "./bin/resultados.js"
+  },
+  "scripts": {
+    "start": "node bin/resultados.js",
+    "test": "vitest run",
+    "test:watch": "vitest --watch",
+    "test:coverage": "vitest run --coverage",
+    "prepublishOnly": "pnpm test"
+  },
+  "keywords": [
+    "resultados",
+    "misresultados",
+    "health",
+    "records",
+    "cli",
+    "medical",
+    "laboratory",
+    "pdf",
+    "healthcare",
+    "puerto-rico"
+  ],
+  "homepage": "https://github.com/rnegron/misresultados-tools/tree/main/cli",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rnegron/misresultados-tools.git",
+    "directory": "cli"
+  },
+  "bugs": {
+    "url": "https://github.com/rnegron/misresultados-tools/issues"
+  },
+  "author": "Raúl Negrón-Otero",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "files": [
+    "bin/",
+    "lib/",
+    "README.md",
+    "LICENSE"
+  ],
+  "packageManager": "pnpm@10.14.0",
+  "dependencies": {
+    "commander": "^11.1.0",
+    "debug": "^4.4.1",
+    "ora": "^8.2.0",
+    "picocolors": "^1.0.1"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "^1.0.0",
+    "nock": "^13.4.0",
+    "vitest": "^1.0.0"
+  }
+}
