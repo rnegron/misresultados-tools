@@ -182,67 +182,6 @@ The GitHub Actions workflow (`.github/workflows/ci.yml`) runs on every push and 
 4. **Coverage**: Generates coverage reports and uploads to Codecov
 5. **Dependency Management**: Uses pnpm for faster, reliable builds
 
-### Release Process
-
-To create a new GitHub release and publish to npm:
-
-#### 1. Pre-release Checks
-```bash
-# Ensure all tests pass and code is formatted
-pnpm test
-pnpm format:check
-
-# Ensure you're on main branch with latest changes
-git checkout main
-git pull origin main
-```
-
-#### 2. Version Bump
-```bash
-# Update version in package.json (patch/minor/major)
-npm version patch  # for bug fixes (1.0.0 -> 1.0.1)
-npm version minor  # for new features (1.0.0 -> 1.1.0)  
-npm version major  # for breaking changes (1.0.0 -> 2.0.0)
-
-# This creates a git tag automatically
-```
-
-#### 3. Push Changes
-```bash
-# Push the version commit and tag
-git push origin main
-git push origin --tags
-```
-
-#### 4. Create GitHub Release
-```bash
-# Using GitHub CLI (recommended)
-gh release create v1.0.1 \
-  --title "Release v1.0.1" \
-  --notes "Bug fixes and improvements" \
-  --latest
-
-# Or manually via GitHub web interface:
-# 1. Go to https://github.com/rnegron/misresultados-tools/releases
-# 2. Click "Create a new release"
-# 3. Select the tag you just created
-# 4. Add release notes describing changes
-# 5. Click "Publish release"
-```
-
-#### 5. Publish to npm
-```bash
-# Build and publish (package.json has prepublishOnly script)
-npm publish
-
-# Verify the package was published
-npm view misresultados-cli
-```
-
-#### 6. Post-release
-- Verify the npm badge in README shows the new version
-- Check that the GitHub release appears correctly
-- Test the published package: `npm install -g misresultados-cli@latest`
 
 ### HTTP Implementation Notes
 
