@@ -182,7 +182,6 @@ The GitHub Actions workflow (`.github/workflows/ci.yml`) runs on every push and 
 4. **Coverage**: Generates coverage reports and uploads to Codecov
 5. **Dependency Management**: Uses pnpm for faster, reliable builds
 
-
 ### HTTP Implementation Notes
 
 - Use Node.js built-in `https` module
