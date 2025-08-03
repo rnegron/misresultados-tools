@@ -16,7 +16,7 @@ This repository contains tools I find useful for interacting with [misresultados
 
 If you end up using these tools, I'd genuinely enjoy to hear about your experience. Whether you've found them helpful, run into issues, or have ideas for improvements, your feedback is welcome.
 
-**[Share your feedback here →](https://github.com/rauln/misresultados-tools/issues/new)**
+**[Share your feedback here →](https://github.com/rnegron/misresultados-tools/issues/new?template=feedback.md)**
 
 ## Disclaimer
 
