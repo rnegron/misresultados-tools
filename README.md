@@ -8,7 +8,7 @@ This repository contains tools I find useful for interacting with [misresultados
 
 - **[CLI Tool](./cli/)** - Command-line interface for fetching and downloading medical results programmatically.
 
-- **[Browser Extension](./extension/)** - TODO
+- **[Browser Extension](./extension/)** - Firefox extension for auto-filling patient data.
 
 ## Why build this?
 

@@ -1,6 +1,6 @@
 # misresultados-cli
 
-[![npm version](https://badge.fury.io/js/misresultados-cli.svg)](https://badge.fury.io/js/misresultados-cli)
+[![NPM Version](https://img.shields.io/npm/v/misresultados-cli)](https://www.npmjs.com/package/misresultados-cli)
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)](https://nodejs.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![CI](https://github.com/rnegron/misresultados-tools/actions/workflows/ci.yml/badge.svg)](https://github.com/rnegron/misresultados-tools/actions/workflows/ci.yml)

@@ -1,0 +1,211 @@
+name: Manual Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      package:
+        description: 'Package to release'
+        required: true
+        type: choice
+        options:
+          - cli
+          - extension
+      version_bump:
+        description: 'Version bump type'
+        required: true
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+      release_notes:
+        description: 'Release notes (optional)'
+        required: false
+        type: string
+
+jobs:
+  release-cli:
+    if: github.event.inputs.package == 'cli'
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v2
+      with:
+        version: 10
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'pnpm'
+        cache-dependency-path: cli/pnpm-lock.yaml
+        registry-url: 'https://registry.npmjs.org'
+
+    - name: Install dependencies
+      working-directory: ./cli
+      run: pnpm install --frozen-lockfile
+
+    - name: Run tests
+      working-directory: ./cli
+      run: pnpm test
+
+    - name: Bump version
+      working-directory: ./cli
+      run: pnpm version ${{ github.event.inputs.version_bump }} --no-git-tag-version
+
+    - name: Get new version
+      id: version
+      working-directory: ./cli
+      run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+
+    - name: Commit version bump
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add cli/package.json
+        git commit -m "chore(cli): bump version to v${{ steps.version.outputs.version }}"
+        git push
+
+    - name: Create Git tag
+      run: |
+        git tag cli-v${{ steps.version.outputs.version }}
+        git push origin cli-v${{ steps.version.outputs.version }}
+
+    - name: Publish to npm
+      working-directory: ./cli
+      run: pnpm publish --access public
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+    - name: Create GitHub Release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: cli-v${{ steps.version.outputs.version }}
+        release_name: CLI v${{ steps.version.outputs.version }}
+        body: |
+          ## CLI Release v${{ steps.version.outputs.version }}
+
+          ${{ github.event.inputs.release_notes }}
+
+          ### Installation
+          ```bash
+          npm install -g misresultados-cli@${{ steps.version.outputs.version }}
+          ```
+
+          ### Changes
+          See [CHANGELOG](https://github.com/rnegron/misresultados-tools/blob/main/cli/CHANGELOG.md) for details.
+        draft: false
+        prerelease: false
+
+  release-extension:
+    if: github.event.inputs.package == 'extension'
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v2
+      with:
+        version: 8
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'pnpm'
+        cache-dependency-path: extension/pnpm-lock.yaml
+
+    - name: Install dependencies
+      working-directory: ./extension
+      run: pnpm install --frozen-lockfile
+
+    - name: Lint extension
+      working-directory: ./extension
+      run: pnpm run lint
+
+    - name: Get current version
+      id: current_version
+      working-directory: ./extension
+      run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+
+    - name: Bump version in package.json
+      working-directory: ./extension
+      run: pnpm version ${{ github.event.inputs.version_bump }} --no-git-tag-version
+
+    - name: Get new version
+      id: new_version
+      working-directory: ./extension
+      run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+
+    - name: Update manifest.json version
+      working-directory: ./extension
+      run: |
+        node -e "
+        const fs = require('fs');
+        const manifest = JSON.parse(fs.readFileSync('manifest.json', 'utf8'));
+        manifest.version = '${{ steps.new_version.outputs.version }}';
+        fs.writeFileSync('manifest.json', JSON.stringify(manifest, null, 2) + '\n');
+        "
+
+    - name: Build extension
+      working-directory: ./extension
+      run: pnpm run build
+
+    - name: Commit version bump
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add extension/package.json extension/manifest.json
+        git commit -m "chore(extension): bump version to v${{ steps.new_version.outputs.version }}"
+        git push
+
+    - name: Create Git tag
+      run: |
+        git tag extension-v${{ steps.new_version.outputs.version }}
+        git push origin extension-v${{ steps.new_version.outputs.version }}
+
+    - name: Create GitHub Release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: extension-v${{ steps.new_version.outputs.version }}
+        release_name: Extension v${{ steps.new_version.outputs.version }}
+        body: |
+          ## Browser Extension Release v${{ steps.new_version.outputs.version }}
+
+          ${{ github.event.inputs.release_notes }}
+
+          ### Installation
+          Download the `.zip` file below and install manually in Firefox:
+          1. Go to `about:debugging`
+          2. Click "This Firefox"
+          3. Click "Load Temporary Add-on"
+          4. Select the downloaded `.zip` file
+
+          ### Changes
+          See [CHANGELOG](https://github.com/rnegron/misresultados-tools/blob/main/extension/CHANGELOG.md) for details.
+        draft: false
+        prerelease: false
+
+    - name: Upload extension artifact to release
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./extension/web-ext-artifacts/misresultados_helper-${{ steps.new_version.outputs.version }}.zip
+        asset_name: misresultados-helper-v${{ steps.new_version.outputs.version }}.zip
+        asset_content_type: application/zip
