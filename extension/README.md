@@ -2,6 +2,7 @@
 
 [![Firefox Extension](https://img.shields.io/badge/Firefox-Extension-orange)](https://addons.mozilla.org/)
 [![Manifest V3](https://img.shields.io/badge/Manifest-V3-blue)](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions)
+[![Extension CI](https://github.com/rnegron/misresultados-tools/actions/workflows/extension-ci.yml/badge.svg)](https://github.com/rnegron/misresultados-tools/actions/workflows/extension-ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Extensión de Firefox para auto-completar formularios de paciente en misresultados.com y e-labresults.com con un solo clic.

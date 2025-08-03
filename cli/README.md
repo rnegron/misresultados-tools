@@ -3,7 +3,7 @@
 [![NPM Version](https://img.shields.io/npm/v/misresultados-cli)](https://www.npmjs.com/package/misresultados-cli)
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)](https://nodejs.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![CI](https://github.com/rnegron/misresultados-tools/actions/workflows/ci.yml/badge.svg)](https://github.com/rnegron/misresultados-tools/actions/workflows/ci.yml)
+[![CLI CI](https://github.com/rnegron/misresultados-tools/actions/workflows/cli-ci.yml/badge.svg)](https://github.com/rnegron/misresultados-tools/actions/workflows/cli-ci.yml)
 [![codecov](https://codecov.io/gh/rnegron/misresultados-tools/branch/main/graph/badge.svg)](https://codecov.io/gh/rnegron/misresultados-tools)
 [![Code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 [![Downloads](https://img.shields.io/npm/dm/misresultados-cli.svg)](https://www.npmjs.com/package/misresultados-cli)
