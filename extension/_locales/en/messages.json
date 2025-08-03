@@ -1,0 +1,86 @@
+{
+  "extensionName": {
+    "message": "MisResultados Helper"
+  },
+  "extensionDescription": {
+    "message": "Auto-fill patient forms on misresultados.com and e-labresults.com"
+  },
+  
+  "nameLabel": {
+    "message": "Full name"
+  },
+  "namePlaceholder": {
+    "message": "Enter your full name"
+  },
+  "birthLabel": {
+    "message": "Date of birth"
+  },
+  "dayPlaceholder": {
+    "message": "Day"
+  },
+  "monthPlaceholder": {
+    "message": "Month"
+  },
+  "yearPlaceholder": {
+    "message": "Year"
+  },
+  "saveButton": {
+    "message": "Save"
+  },
+  "savingButton": {
+    "message": "Saving..."
+  },
+  "clearButton": {
+    "message": "Clear"
+  },
+  "settingsSaved": {
+    "message": "Settings saved!"
+  },
+  "settingsCleared": {
+    "message": "Settings cleared"
+  },
+  "completeFields": {
+    "message": "Please complete all fields"
+  },
+  "errorSaving": {
+    "message": "Error saving settings"
+  },
+  "errorClearing": {
+    "message": "Error clearing settings"
+  },
+  "errorLoading": {
+    "message": "Error loading data"
+  },
+
+  "fillButton": {
+    "message": "Fill Form"
+  },
+  "fillButtonDone": {
+    "message": "Done!"
+  },
+  "noData": {
+    "message": "Configure patient data in extension popup"
+  },
+  "autoFilled": {
+    "message": "Form filled"
+  },
+  "noFields": {
+    "message": "No matching form fields found"
+  },
+  "autoFillError": {
+    "message": "Auto-fill error: "
+  },
+
+  "monthJanuary": { "message": "January" },
+  "monthFebruary": { "message": "February" },
+  "monthMarch": { "message": "March" },
+  "monthApril": { "message": "April" },
+  "monthMay": { "message": "May" },
+  "monthJune": { "message": "June" },
+  "monthJuly": { "message": "July" },
+  "monthAugust": { "message": "August" },
+  "monthSeptember": { "message": "September" },
+  "monthOctober": { "message": "October" },
+  "monthNovember": { "message": "November" },
+  "monthDecember": { "message": "December" }
+}

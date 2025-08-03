@@ -1,0 +1,20 @@
+{
+  "name": "misresultados-helper",
+  "version": "1.0.0",
+  "description": "Firefox extension to auto-fill patient forms on MisResultados",
+  "scripts": {
+    "format": "prettier --write .",
+    "lint": "web-ext lint",
+    "build": "web-ext build",
+    "start": "web-ext run",
+    "start:dev": "web-ext run --firefox=firefoxdeveloperedition"
+  },
+  "devDependencies": {
+    "prettier": "^3.6.2",
+    "web-ext": "^7.8.0"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "packageManager": "pnpm@8.0.0"
+}

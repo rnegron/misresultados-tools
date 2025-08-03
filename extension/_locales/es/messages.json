@@ -1,0 +1,86 @@
+{
+  "extensionName": {
+    "message": "MisResultados Helper"
+  },
+  "extensionDescription": {
+    "message": "Auto-completa formularios de paciente en misresultados.com y e-labresults.com"
+  },
+  
+  "nameLabel": {
+    "message": "Nombre completo"
+  },
+  "namePlaceholder": {
+    "message": "Introduce tu nombre completo"
+  },
+  "birthLabel": {
+    "message": "Fecha de nacimiento"
+  },
+  "dayPlaceholder": {
+    "message": "Día"
+  },
+  "monthPlaceholder": {
+    "message": "Mes"
+  },
+  "yearPlaceholder": {
+    "message": "Año"
+  },
+  "saveButton": {
+    "message": "Guardar"
+  },
+  "savingButton": {
+    "message": "Guardando..."
+  },
+  "clearButton": {
+    "message": "Limpiar"
+  },
+  "settingsSaved": {
+    "message": "¡Configuración guardada!"
+  },
+  "settingsCleared": {
+    "message": "Configuración eliminada"
+  },
+  "completeFields": {
+    "message": "Por favor completa todos los campos"
+  },
+  "errorSaving": {
+    "message": "Error al guardar la configuración"
+  },
+  "errorClearing": {
+    "message": "Error al limpiar la configuración"
+  },
+  "errorLoading": {
+    "message": "Error al cargar datos"
+  },
+
+  "fillButton": {
+    "message": "Completar Formulario"
+  },
+  "fillButtonDone": {
+    "message": "¡Completado!"
+  },
+  "noData": {
+    "message": "Configura los datos del paciente en la extensión"
+  },
+  "autoFilled": {
+    "message": "Formulario completado"
+  },
+  "noFields": {
+    "message": "No se encontraron campos compatibles"
+  },
+  "autoFillError": {
+    "message": "Error al completar: "
+  },
+
+  "monthJanuary": { "message": "Enero" },
+  "monthFebruary": { "message": "Febrero" },
+  "monthMarch": { "message": "Marzo" },
+  "monthApril": { "message": "Abril" },
+  "monthMay": { "message": "Mayo" },
+  "monthJune": { "message": "Junio" },
+  "monthJuly": { "message": "Julio" },
+  "monthAugust": { "message": "Agosto" },
+  "monthSeptember": { "message": "Septiembre" },
+  "monthOctober": { "message": "Octubre" },
+  "monthNovember": { "message": "Noviembre" },
+  "monthDecember": { "message": "Diciembre" }
+}
