@@ -1,7 +1,5 @@
 # misresultados-tools
 
-## About
-
 This repository contains tools I find useful for interacting with [misresultados.com](https://misresultados.com/), a healthcare results platform.
 
 ## Available Tools

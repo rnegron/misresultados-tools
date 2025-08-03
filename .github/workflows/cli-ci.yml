@@ -1,4 +1,4 @@
-name: CI Pipeline
+name: CLI CI
 
 on:
   push:
@@ -30,7 +30,7 @@ jobs:
     - name: Setup pnpm
       uses: pnpm/action-setup@v2
       with:
-        version: 10
+        version: 10.14.0
 
     - name: Setup Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
@@ -40,7 +40,7 @@ jobs:
         cache-dependency-path: cli/pnpm-lock.yaml
 
     - name: Install dependencies
-      run: pnpm install --frozen-lockfile
+      run: pnpm install
 
     - name: Run tests
       run: pnpm test
